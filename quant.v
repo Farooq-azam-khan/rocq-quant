@@ -38,15 +38,15 @@ Compute count_constructors (MultConj (AddConj Top Zero) Top).
 
 (* proof terms *)
 
-Inductive term: Type := 
-  | TVar : Var -> term 
-  | Sum : term -> term -> term 
-  | Scale : Scalar -> term -> term 
-  | OneIntro: Scalar -> term 
-  | OneElim: term -> term -> term 
-  | Lambda : Var -> term -> term 
-  | TApp : term -> term -> term 
-  | MultConjIntro : term -> term -> term 
+Inductive term: Type :=
+  | TVar : Var -> term
+  | Sum : term -> term -> term
+  | Scale : Scalar -> term -> term
+  | OneIntro: Scalar -> term
+  | OneElim: term -> term -> term
+  | Lambda : Var -> term -> term
+  | TApp : term -> term -> term
+  | MultConjIntro : term -> term -> term
   | MultConjElim : term -> Var -> Var -> term  -> term 
   | TopIntro : term 
   | ZeroElim : term -> term 
@@ -60,7 +60,7 @@ Inductive term: Type :=
 
 Definition Context := list (Var * prop).
 
-(* Figure 1 *)
+(* Figure 1: Typing Rules *)
 Inductive typing : Context -> term -> prop -> Prop := 
   | TypAX : forall (x: Var) (A: prop), typing [(x, A)] (TVar x) A 
   | TypSum : forall (G: Context) (A: prop) (u: term) (v: term), 
@@ -92,6 +92,30 @@ Inductive typing : Context -> term -> prop -> Prop :=
   | TypeAddDisjIntro2 : forall (G:Context) (t: term) (A B: prop) , 
       typing G t B -> typing G (AddDisjIntro2 t) (AddDisj A B)
   | TypeAddDisjElim : forall (G D: Context) (x y: Var) (t u v: term) (A B C: prop), 
-      typing G t (AddDisj A B)  -> typing ((x, A)::D) u C -> typing ((y, B) :: D ) v -> typing (G++D) (AddDisjElim t x u y v) C 
+      typing G t (AddDisj A B)  -> typing ((x, A)::D) u C -> typing ((y, B) :: D ) v C -> typing (G++D) (AddDisjElim t x u y v) C 
 . 
 
+(* Figure 2: Reduction Rules *)
+Inductive step : term -> term -> Prop := 
+  | R1 : forall (a: Scalar) (t: term), step (TApp (OneIntro a) t) (Scale a t) 
+(*
+  | R2 : forall 
+  | R3 : forall 
+  | R4 : forall 
+  | R5 : forall 
+  | R6 : forall 
+  | R7 : forall 
+  | R8 : forall 
+  | R9 : forall 
+  | R10 : forall 
+  | R11 : forall 
+  | R12 : forall 
+  | R13 : forall 
+  | R14 : forall 
+  | R15 : forall 
+  | R16 : forall 
+  | R17 : forall 
+  | R18 : forall 
+  | R19 : forall 
+*)
+.
