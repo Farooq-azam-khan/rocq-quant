@@ -101,7 +101,8 @@ Fixpoint subs (t : term) (x : var) (u : term) : term :=
   (* x [u / x] -> u *)
   (* y [u / x] -> y *)
   | TVar y => if eqb x y then u else TVar y
-  (* (t_one + t_two)[u / x] -> (t_one[u / x] + t_two[u / x]*)                          | Sum t_one t_two => Sum (subs t_one x u) (subs t_two x u)
+  (* (t_one + t_two)[u / x] -> (t_one[u / x] + t_two[u / x]*)
+  | Sum t_one t_two => Sum (subs t_one x u) (subs t_two x u)
   (* Scale : Scalar -> term -> term *)
   | Scale s t_one => Scale s (subs t_one x u)
   (* OneIntro: Scalar -> term *)
